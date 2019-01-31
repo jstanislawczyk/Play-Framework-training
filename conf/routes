@@ -1,1 +1,5 @@
-GET     /                                   controllers.HomeController.index
+GET         /               controllers.HomeController.index
+GET         /params         controllers.HomeController.params(someString: String, someInt: Int)
+GET         /default        controllers.HomeController.default(someString: String ?= "default", someInt: Int ?= 0)
+GET         /fixed          controllers.HomeController.fixed(fixedString: String = "cantChangeThat")
+GET         /:test          controllers.HomeController.pathVariable(test: String)
