@@ -26,7 +26,8 @@ dependencies {
     play "com.typesafe.play:play-logback_$scalaVersion:$playVersion"
     play "com.typesafe.play:filters-helpers_$scalaVersion:$playVersion"
 
-    playTest "org.scalatestplus.play:scalatestplus-play_$scalaVersion:3.1.2"
+
+    playTest "com.typesafe.play:play-specs2_$scalaVersion:$playVersion"
 }
 
 repositories {

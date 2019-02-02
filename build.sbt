@@ -1,16 +1,15 @@
-name := """play-scala-seed"""
-organization := "com.example"
+name := """play-scala-slick-example"""
 
-version := "1.0-SNAPSHOT"
+version := "2.6.x"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.6", "2.11.12")
+crossScalaVersions := Seq("2.11.12", "2.12.4")
 
 libraryDependencies += guice
-libraryDependencies += "com.typesafe.play" %% "play-slick" % "4.0.0"
-libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "4.0.0"
-libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.14"
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.3"
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "3.0.3"
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.38"
+libraryDependencies += specs2 % Test
