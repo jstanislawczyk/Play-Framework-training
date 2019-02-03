@@ -1,10 +1,14 @@
 package controllers
 
 import javax.inject._
+import model.UserRepository
+import play.api.libs.json.Json
 import play.api.mvc._
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class HomeController @Inject()(repository: UserRepository, cc: MessagesControllerComponents )
+                              (implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   def index(): Action[AnyContent] = Action {
     Ok("Hello world")
@@ -24,5 +28,16 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def fixed(fixedString: String): Action[AnyContent] = Action {
     Ok(s"Fixed param: $fixedString")
+  }
+
+  def testFind: Action[AnyContent] = Action.async { implicit request =>
+    repository.list().map { people =>
+      Ok(Json.toJson(people))
+    }
+  }
+
+  def testSave: Action[AnyContent] = Action {
+    repository.create("test3", "test2")
+    Ok("created")
   }
 }
