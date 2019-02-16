@@ -4,16 +4,19 @@ import javax.inject._
 import model.UserRepository
 import play.api.libs.json.Json
 
-import scala.concurrent.ExecutionContext
 import play.api.mvc._
 import akka.stream.scaladsl._
 import play.api.libs.streams.ActorFlow
-import akka.actor.ActorSystem
 import akka.stream.Materializer
 import websockets.MyWebSocketActor
+import javax.inject.Inject
+
+import akka.actor.ActorSystem
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class HomeController @Inject()(repository: UserRepository, cc: MessagesControllerComponents)
+class HomeController @Inject()(repository: UserRepository, cc: MessagesControllerComponents, actorSystem: ActorSystem)
                               (implicit ec: ExecutionContext, system: ActorSystem, mat: Materializer) extends MessagesAbstractController(cc) {
 
   def socket(): WebSocket = WebSocket.accept[String, String] { accept =>
@@ -28,11 +31,14 @@ class HomeController @Inject()(repository: UserRepository, cc: MessagesControlle
 
   def socketActor(): WebSocket = WebSocket.accept[String, String] { _ =>
     ActorFlow.actorRef { out =>
-      MyWebSocketActor.props(out)
+      MyWebSocketActor.props(out, actorSystem)
     }
   }
 
   def index(): Action[AnyContent] = Action {
+
+
+
     Ok("Hello world")
   }
 
