@@ -3,12 +3,34 @@ package controllers
 import javax.inject._
 import model.UserRepository
 import play.api.libs.json.Json
-import play.api.mvc._
+
 import scala.concurrent.ExecutionContext
+import play.api.mvc._
+import akka.stream.scaladsl._
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import websockets.MyWebSocketActor
 
 @Singleton
-class HomeController @Inject()(repository: UserRepository, cc: MessagesControllerComponents )
-                              (implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
+class HomeController @Inject()(repository: UserRepository, cc: MessagesControllerComponents)
+                              (implicit ec: ExecutionContext, system: ActorSystem, mat: Materializer) extends MessagesAbstractController(cc) {
+
+  def socket(): WebSocket = WebSocket.accept[String, String] { accept =>
+    println(s"SOCKET $accept")
+
+    val in = Sink.foreach[String](println)
+
+    val out = Source.single("Hello Test!").concat(Source.maybe)
+
+    Flow.fromSinkAndSource(in, out)
+  }
+
+  def socketActor(): WebSocket = WebSocket.accept[String, String] { _ =>
+    ActorFlow.actorRef { out =>
+      MyWebSocketActor.props(out)
+    }
+  }
 
   def index(): Action[AnyContent] = Action {
     Ok("Hello world")

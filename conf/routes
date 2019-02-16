@@ -6,3 +6,6 @@ GET         /:test                  controllers.HomeController.pathVariable(test
 
 GET         /elomelo/testFind       controllers.HomeController.testFind
 GET         /elomelo/testSave       controllers.HomeController.testSave
+
+GET         /test/socket            controllers.HomeController.socket
+GET         /test/socketActor       controllers.HomeController.socketActor
